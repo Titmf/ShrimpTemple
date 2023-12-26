@@ -3,22 +3,29 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _dodgeCounter;
+    [SerializeField] private TextMeshProUGUI _scoreCounter;
+    [SerializeField] private TextMeshProUGUI _bestScoreCounter;
     
-    public SticksMovement _sticksMovement;
-    
+    public ShrimpGameLogic _shrimpGameLogic;
+
     void Awake()
     {
-        _sticksMovement.OnCountChange += ChangeText;
+        _shrimpGameLogic.OnScoreChanged += ChangeScoreText;
+        _shrimpGameLogic.ThenShowBestScore += ChangeBestScoreText;
     }
-    
-    private void ChangeText(int amount)
+    private void ChangeBestScoreText(int amount)
     {
-        _dodgeCounter.text = amount.ToString();
+        _bestScoreCounter.text = "Best Score: " + amount;
+    }
+
+    private void ChangeScoreText(int amount)
+    {
+        _scoreCounter.text = amount.ToString();
     }
 
     private void OnDestroy()
     {
-        _sticksMovement.OnCountChange -= ChangeText;
+        _shrimpGameLogic.OnScoreChanged -= ChangeScoreText;
+        _shrimpGameLogic.ThenShowBestScore -= ChangeBestScoreText;
     }
 }

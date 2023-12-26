@@ -6,19 +6,24 @@ using Random = UnityEngine.Random;
 public class SticksMovement : MonoBehaviour
 {
     [SerializeField] private Transform _transformShrimp;
-    [SerializeField] private float _distanse;
-    [SerializeField] private float _moveDuration;
+    [SerializeField] private float _distance;
     [SerializeField] private float _tickDuration;
-    
+    [SerializeField] private float _tickShrinknessMoveDuration;
+    [SerializeField] private float _defaultMoveDuration = 4f;
+    private float _moveDuration;
+
     private readonly Vector3[] _allSides = new[] { Vector3.right, Vector3.up, Vector3.down, Vector3.left };
 
-    private int _dodgedCount;
+    private const int DodgedCountMultiplier = 1;
+    private Vector3 _side;
     
     public delegate void DodgeCountDelegate(int amount);
-    public event DodgeCountDelegate OnCountChange;
-    
-    private void Start()
+    public event DodgeCountDelegate ThenDodged;
+
+    public void StartGame()
     {
+        _moveDuration = _defaultMoveDuration;
+        SetStickNewPosition();
         StartCoroutine(StickTick());
     }
 
@@ -26,18 +31,25 @@ public class SticksMovement : MonoBehaviour
     {
         while (true)
         {
-            StickMove();
+            BeforeMoveStick();
 
+            _moveDuration -= _tickShrinknessMoveDuration;
+            
             yield return new WaitForSeconds(_tickDuration);
-        }
+        } 
     }
     
-    private void StickMove()
+    private void BeforeMoveStick()
     {
-        Vector3 side = _getRandomSide();
-        _moveStickToRandomSide(side);
+        _side =  _getRandomSide();
+        SetStickNewPosition();
+        StartCoroutine(MoveStick(-_side));
+    }
+
+    private void SetStickNewPosition()
+    {
+        _moveStickToRandomSide(_side);
         _rotateStickToShrimp();
-        StartCoroutine(MoveStick(-side));
     }
     
     IEnumerator MoveStick(Vector3 targetPosition)
@@ -46,13 +58,12 @@ public class SticksMovement : MonoBehaviour
         Vector3 startPosition = transform.position;
         while (timeElapsed < _moveDuration)
         {
-            transform.position = Vector3.Lerp(startPosition, targetPosition * _distanse, timeElapsed / _moveDuration);
+            transform.position = Vector3.Lerp(startPosition, targetPosition * _distance, timeElapsed / _moveDuration);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-
-        _dodgedCount++;
-        OnCountChange?.Invoke(_dodgedCount);
+        
+        ThenDodged?.Invoke(DodgedCountMultiplier);
     }
 
     private int RandomSide()
@@ -68,7 +79,7 @@ public class SticksMovement : MonoBehaviour
 
     private void _moveStickToRandomSide(Vector3 moveTo)
     {
-        transform.position = _transformShrimp.position + moveTo * _distanse;
+        transform.position = _transformShrimp.position + moveTo * _distance;
     }
 
     private void _rotateStickToShrimp()

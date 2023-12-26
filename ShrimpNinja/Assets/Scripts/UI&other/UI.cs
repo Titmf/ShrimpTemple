@@ -15,7 +15,7 @@ public class UI : MonoBehaviour
     }
     private void ChangeBestScoreText(int amount)
     {
-        _bestScoreCounter.text = "Best Score: " + amount;
+        _bestScoreCounter.text = "Best Score: " + amount.ToString();
     }
 
     private void ChangeScoreText(int amount)

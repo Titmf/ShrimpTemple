@@ -9,8 +9,8 @@ public class SticksMovement : MonoBehaviour
     [SerializeField] private float _distance;
     [SerializeField] private float _tickDuration;
     [SerializeField] private float _tickShrinknessMoveDuration;
-    [SerializeField] private float _defaultMoveDuration = 4f;
-    private float _moveDuration;
+    [SerializeField] private float _defaultMoveDuration;
+    [SerializeField] private float _moveDuration;
 
     private readonly Vector3[] _allSides = new[] { Vector3.right, Vector3.up, Vector3.down, Vector3.left };
 
@@ -26,6 +26,11 @@ public class SticksMovement : MonoBehaviour
         SetStickNewPosition();
         StartCoroutine(StickTick());
     }
+    
+    public void StopGame()
+    {
+        StopAllCoroutines();
+    }
 
     IEnumerator StickTick()
     {
@@ -37,19 +42,6 @@ public class SticksMovement : MonoBehaviour
             
             yield return new WaitForSeconds(_tickDuration);
         } 
-    }
-    
-    private void BeforeMoveStick()
-    {
-        _side =  _getRandomSide();
-        SetStickNewPosition();
-        StartCoroutine(MoveStick(-_side));
-    }
-
-    private void SetStickNewPosition()
-    {
-        _moveStickToRandomSide(_side);
-        _rotateStickToShrimp();
     }
     
     IEnumerator MoveStick(Vector3 targetPosition)
@@ -64,6 +56,19 @@ public class SticksMovement : MonoBehaviour
         }
         
         ThenDodged?.Invoke(DodgedCountMultiplier);
+    }
+
+    private void BeforeMoveStick()
+    {
+        _side = _getRandomSide();
+        SetStickNewPosition();
+        StartCoroutine(MoveStick(-_side));
+    }
+
+    private void SetStickNewPosition()
+    {
+        _moveStickToRandomSide(_side);
+        _rotateStickToShrimp();
     }
 
     private int RandomSide()

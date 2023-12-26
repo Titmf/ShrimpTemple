@@ -15,7 +15,6 @@ public class ShrimpGameLogic : MonoBehaviour
     public delegate void ShowBestScoreDelegate(int amount);
     public event ShowBestScoreDelegate ThenShowBestScore;
 
-    
     private void Awake()
     {
         _sticksMovement.ThenDodged += AddCountToScore;
@@ -55,20 +54,17 @@ public class ShrimpGameLogic : MonoBehaviour
     {
         PauseGame();
         
-        _sticksMovement.//отключить куротину тика?
+        _sticksMovement.StopGame();
         
         _gameOver.SetActive(true);
         
-        if (_score == _bestScore)
-        {
-            ThenShowBestScore?.Invoke(_bestScore);
-        }
+        ThenShowBestScore?.Invoke(_bestScore);
     }
 
     private void AddCountToScore(int addedCount)
     {
         _score += addedCount;
-        
+
         OnScoreChanged?.Invoke(_score);
 
         if (_score > _bestScore)

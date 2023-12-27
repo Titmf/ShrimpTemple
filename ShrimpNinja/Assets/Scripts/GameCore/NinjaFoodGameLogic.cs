@@ -1,11 +1,16 @@
+using GameCore;
+
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NinjaFoodGameLogic : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOver;
     [SerializeField] private int _scoreCheckpointForCoins;
     [SerializeField] private int _AddCoinsAmount;
-
+    [SerializeField] private ShopItemSo CurrentSkinSo;
+    [SerializeField] private Image CurrentSkinImage;
+    
     private int _score;
     private int _bestScore;
 
@@ -38,6 +43,8 @@ public class NinjaFoodGameLogic : MonoBehaviour
         {
             LoadBestScore();
         }
+        
+        CurrentSkinImage.sprite = CurrentSkinSo._sprite;
     }
     
     public void StartNewGame()

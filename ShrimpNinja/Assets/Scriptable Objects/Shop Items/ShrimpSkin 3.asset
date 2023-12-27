@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ea2643b842438ea1c6daaa9edc3ba4, type: 3}
   m_Name: ShrimpSkin 3
   m_EditorClassIdentifier: 
-  _price: 10
+  _price: 5
   _sprite: {fileID: 21300000, guid: 33111b756e2d99f41b55fc8ca808b4fc, type: 3}

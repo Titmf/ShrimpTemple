@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79ea2643b842438ea1c6daaa9edc3ba4, type: 3}
-  m_Name: ShrimpSkin 2
+  m_Name: CurrentSkin
   m_EditorClassIdentifier: 
   _price: 0
   _sprite: {fileID: 21300000, guid: 176d516becf27b44698acd7ca18028e8, type: 3}

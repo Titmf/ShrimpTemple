@@ -9,11 +9,13 @@ namespace GameCore.Shop
         [SerializeField] private ShopItemSo[] _shopItemSo;
 
         [Space(10)]
-        [SerializeField] private ShopItemTemplate[] _shopSkinsPanels;
+        [SerializeField] private ShopItemTemplate[] _shopItemTemplates;
 
         [Space(10)]
         [SerializeField] private Button[] _shopButtons;
 
+        [Space(10)] [SerializeField] private ShopItemSo CurrentSkin;
+        
         private int _money;
         
         public delegate void SpendMoneyDelegate(int amount);
@@ -32,15 +34,22 @@ namespace GameCore.Shop
             {
                 LoadMoneyCount();
             }
-
+            
+            OnMoneySpended?.Invoke(_money);
             CheckPurchasable();
         }
 
-        private void BuySomething(int NumberButton)
+        public void BuySomething(int NumberButton)
         {
             _money -= _shopItemSo[NumberButton]._price;
             
             OnMoneySpended?.Invoke(_money);
+
+            _shopItemSo[NumberButton]._price = 0;
+
+            CurrentSkin._sprite = _shopItemSo[NumberButton]._sprite;
+            
+            LoadPanels();
             
             CheckPurchasable();
         }
@@ -64,8 +73,8 @@ namespace GameCore.Shop
         {
             for (int i = 0; i < _shopItemSo.Length; i++)
             {
-                _shopSkinsPanels[i]._foodSkin.sprite = _shopItemSo[i]._sprite;
-                _shopSkinsPanels[i]._costText.text = _shopItemSo[i]._price.ToString();
+                _shopItemTemplates[i]._foodSkin.sprite = _shopItemSo[i]._sprite;
+                _shopItemTemplates[i]._costText.text = _shopItemSo[i]._price.ToString();
             }
         }
 

@@ -1,19 +1,24 @@
 using UnityEngine;
 
-public class ShrimpGameLogic : MonoBehaviour
+public class NinjaFoodGameLogic : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOver;
+    [SerializeField] private int _scoreCheckpointForCoins;
+    [SerializeField] private int _AddCoinsAmount;
 
     private int _score;
     private int _bestScore;
-    
+
     public SticksMovement _sticksMovement;
-    
+
     public delegate void AddToScoreDelegate(int amount);
     public event AddToScoreDelegate OnScoreChanged;
     
     public delegate void ShowBestScoreDelegate(int amount);
     public event ShowBestScoreDelegate ThenShowBestScore;
+    
+    public delegate void AddCoinsDelegate(int amount);
+    public event AddCoinsDelegate OnScoreCheckpoints;
 
     private void Awake()
     {
@@ -67,6 +72,11 @@ public class ShrimpGameLogic : MonoBehaviour
 
         OnScoreChanged?.Invoke(_score);
 
+        if (_score % _scoreCheckpointForCoins == 0)
+        {
+            OnScoreCheckpoints?.Invoke(_AddCoinsAmount);
+        }
+        
         if (_score > _bestScore)
         {
             _bestScore = _score;

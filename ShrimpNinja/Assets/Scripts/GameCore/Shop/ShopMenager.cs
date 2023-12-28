@@ -74,7 +74,11 @@ namespace GameCore.Shop
             for (int i = 0; i < _shopItemSo.Length; i++)
             {
                 _shopItemTemplates[i]._foodSkin.sprite = _shopItemSo[i]._sprite;
-                _shopItemTemplates[i]._costText.text = _shopItemSo[i]._price.ToString();
+                _shopItemTemplates[i]._costText.text = "Coins: " + _shopItemSo[i]._price;
+                if (_shopItemSo[i]._price == 0)
+                {
+                    _shopItemTemplates[i]._costText.text = "Owned";
+                }
             }
         }
 

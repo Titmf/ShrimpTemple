@@ -31,7 +31,7 @@ public class GameUI : MonoBehaviour
 
     private void ChangeScoreText(int amount)
     {
-        _scoreCounter.text = amount.ToString();
+        _scoreCounter.text = "Score: " + amount;
     }
 
     private void OnDestroy()
